@@ -44,18 +44,20 @@ def main():
     st.title("📂 File Organizer")
     st.write("Organize your files into categories based on their types.")
     
-    directory_path = st.text_input("Enter the folder path:")
+    directory_path = st.text_input("Enter the folder path:", placeholder="Example: C:/Users/YourName/Downloads")
     
-    if directory_path and os.path.isdir(directory_path):
-        st.success(f"Selected Folder: {directory_path}")
-        
-        if st.button("Organize Files"):
-            logs = organize_files(directory_path)
-            st.write("### File Organization Log:")
-            st.text_area("Logs", "\n".join(logs), height=300)
-            st.success("File organization completed successfully!")
-    else:
-        st.warning("Please enter a valid folder path.")
+    if directory_path:
+        if os.path.isdir(directory_path):
+            st.success(f"Selected Folder: {directory_path}")
+            
+            if st.button("Organize Files"):
+                with st.spinner("Organizing files..."):
+                    logs = organize_files(directory_path)
+                    st.write("### File Organization Log:")
+                    st.text_area("Logs", "\n".join(logs), height=300)
+                st.success("File organization completed successfully!")
+        else:
+            st.error("Invalid folder path. Please enter a valid directory.")
 
 if __name__ == "__main__":
     main()
